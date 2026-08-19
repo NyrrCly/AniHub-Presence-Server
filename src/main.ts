@@ -4,13 +4,13 @@ import { RPCServer } from './services/rpcServer.js';
 
 const rpcServer = new RPCServer();
 
-app.whenReady().then(() => {
+app.whenReady().then(async() => {
     app.setLoginItemSettings({
         openAtLogin: true,
         openAsHidden: true,
     });
 
-    rpcServer.start();
+    await rpcServer.start();
 
     const iconPath = app.isPackaged
         ? path.join(process.resourcesPath, 'assets', 'logo.png')
@@ -25,3 +25,10 @@ app.whenReady().then(() => {
     tray.setToolTip('AniHub Presence'); 
     tray.setContextMenu(contextMenu);
 });
+
+app.on('window-all-closed', () => {
+    rpcServer.stop();
+    if (process.platform !== 'darwin') {
+        app.quit()
+    }
+})
