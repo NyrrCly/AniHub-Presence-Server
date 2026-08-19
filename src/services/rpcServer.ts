@@ -32,6 +32,11 @@ export class RPCServer {
     }
   }
 
+  clearActivity() {
+    if (!this.rpc || !this.isConnected) return;
+    this.rpc.clearActivity();
+  }
+
   setActivity(activityData: ActivityData) {
     if (!this.rpc || !this.isConnected) return;
     this.rpc
@@ -50,7 +55,7 @@ export class RPCServer {
         partyMax: activityData.partyMax || 0,
         startTimestamp: activityData.startTimestamp || 0,
         endTimestamp: activityData.endTimestamp || 0,
-        buttons: activityData.buttons || {},
+        buttons: activityData.buttons || [],
       })
       .catch(console.error);
   }
@@ -73,7 +78,8 @@ export class RPCServer {
         req.on("data", (chunk) => (body += chunk));
         req.on("end", () => {
           try {
-            this.setActivity(JSON.parse(body));
+            if (JSON.parse(body) === null) this.clearActivity()
+            else this.setActivity(JSON.parse(body));
 
             res.writeHead(200, { "Content-Type": "application/json" });
             res.end(JSON.stringify({ status: "successful" }));
