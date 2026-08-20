@@ -89,8 +89,9 @@ export class RPCServer {
         req.on("data", (chunk) => (body += chunk));
         req.on("end", () => {
           try {
-            if (JSON.parse(body) === null) this.clearActivity()
-            else this.setActivity(JSON.parse(body));
+            const data = JSON.parse(body);
+            if (data === null) this.clearActivity()
+            else this.setActivity(data);
 
             res.writeHead(200, { "Content-Type": "application/json" });
             res.end(JSON.stringify({ status: "successful" }));
