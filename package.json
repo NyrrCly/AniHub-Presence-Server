@@ -1,6 +1,6 @@
 {
   "name": "anihub-presence-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "AniHub Presence Server is a Discord Rich Presence application for AniHub.",
   "type": "module",
   "author": {

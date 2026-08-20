@@ -18,17 +18,28 @@ export class RPCServer {
   }
 
   async connectRPC() {
-    this.rpc = new RPC.Client({ transport: "ipc" });
+    this.rpc  = new RPC.Client({ transport: "ipc" });
 
     this.rpc.on("ready", () => {
       console.log("[Discord RPC] Successfully connected to discord!");
       this.isConnected = true;
     });
 
+    this.rpc.on("disconnected", () => {
+      this.rpc.destroy();
+      this.isConnected = false;
+      setTimeout(() => {
+        this.connectRPC();
+      }, 5000);
+    });
+
     try {
       await this.rpc.login({ clientId: this.clientId });
     } catch (error: any) {
       console.error("[Discord RPC] Connection error:", error.message);
+      setTimeout(() => {
+        this.connectRPC();
+      }, 5000);
     }
   }
 
