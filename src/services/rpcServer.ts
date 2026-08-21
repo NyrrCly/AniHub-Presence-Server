@@ -8,6 +8,7 @@ export class RPCServer {
   public server: any;
   public rpc: any;
   public isConnected: boolean;
+  public isCleared: boolean;
 
   constructor(port: number = 3000, clientId: string = "1488575005175320858") {
     this.port = port;
@@ -15,6 +16,7 @@ export class RPCServer {
     this.server = null;
     this.rpc = null;
     this.isConnected = false;
+    this.isCleared = true;
   }
 
   async connectRPC() {
@@ -44,12 +46,14 @@ export class RPCServer {
   }
 
   clearActivity() {
-    if (!this.rpc || !this.isConnected) return;
+    if (!this.rpc || !this.isConnected || this.isCleared) return;
+    this.isCleared = true;
     this.rpc.clearActivity();
   }
 
   setActivity(activityData: ActivityData) {
     if (!this.rpc || !this.isConnected) return;
+    this.isCleared = false;
     this.rpc
       .setActivity({
         details: activityData.details || "Дивиться аніме",
@@ -58,8 +62,8 @@ export class RPCServer {
         largeImageKey: activityData.largeImageKey || "logo",
         largeImageText: activityData.largeImageText || "Logo",
         largeImageUrl: activityData.largeImageUrl || "",
-        smallImageKey: activityData.smallImageKey || "",
-        smallImageText: activityData.smallImageText || "",
+        smallImageKey: activityData.smallImageKey || "logo",
+        smallImageText: activityData.smallImageText || "Logo",
         smallImageUrl: activityData.smallImageUrl || "",
         partyId: activityData.partyId || "",
         partySize: activityData.partySize || 0,
@@ -90,7 +94,7 @@ export class RPCServer {
         req.on("end", () => {
           try {
             const data = JSON.parse(body);
-            if (data === null) this.clearActivity()
+            if (!data) this.clearActivity()
             else this.setActivity(data);
 
             res.writeHead(200, { "Content-Type": "application/json" });
