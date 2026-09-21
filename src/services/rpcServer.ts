@@ -9,6 +9,7 @@ export class RPCServer {
   public rpc: any;
   public isConnected: boolean;
   public isCleared: boolean;
+  public lastActivityData: ActivityData | null = null;
 
   constructor(port: number = 3000, clientId: string = "1488575005175320858") {
     this.port = port;
@@ -20,7 +21,7 @@ export class RPCServer {
   }
 
   async connectRPC() {
-    this.rpc  = new RPC.Client({ transport: "ipc" });
+    this.rpc = new RPC.Client({ transport: "ipc" });
 
     this.rpc.on("ready", () => {
       console.log("[Discord RPC] Successfully connected to discord!");
@@ -49,6 +50,13 @@ export class RPCServer {
     if (!this.rpc || !this.isConnected || this.isCleared) return;
     this.isCleared = true;
     this.rpc.clearActivity();
+  }
+
+  reloadActivity() {
+    if (!this.rpc || !this.isConnected) return;
+    if (this.lastActivityData) {
+      this.setActivity(this.lastActivityData);
+    } else this.clearActivity();
   }
 
   setActivity(activityData: ActivityData) {
@@ -94,7 +102,8 @@ export class RPCServer {
         req.on("end", () => {
           try {
             const data = JSON.parse(body);
-            if (!data) this.clearActivity()
+            this.lastActivityData = data ? data : null;
+            if (!data) this.clearActivity();
             else this.setActivity(data);
 
             res.writeHead(200, { "Content-Type": "application/json" });

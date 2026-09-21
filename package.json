@@ -1,6 +1,6 @@
 {
   "name": "anihub-presence-server",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "AniHub Presence Server is a Discord Rich Presence application for AniHub.",
   "type": "module",
   "author": {
@@ -11,7 +11,8 @@
     "build": "tsc && copyfiles -u 1 assets/**/* dist/assets",
     "start": "npm run build && electron dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dist": "npm run build && electron-builder"
+    "dist": "npm run build && electron-builder",
+    "prettier": "prettier --write ."
   },
   "build": {
     "artifactName": "AniHub-Presence-${version}.${ext}",
@@ -59,9 +60,9 @@
   "devDependencies": {
     "@types/discord-rpc": "^4.0.11",
     "copyfiles": "^2.4.1",
-    "electron": "^43.4.0",
+    "electron": "^44.4.3",
     "electron-builder": "^26.15.3",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.8",
     "typescript": "^7.0.2"
   },
   "dependencies": {
