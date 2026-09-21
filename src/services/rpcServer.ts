@@ -102,7 +102,7 @@ export class RPCServer {
         req.on("end", () => {
           try {
             const data = JSON.parse(body);
-            this.lastActivityData = data;
+            this.lastActivityData = data ? data : null;
             if (!data) this.clearActivity();
             else this.setActivity(data);
 
