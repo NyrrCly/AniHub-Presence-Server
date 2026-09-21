@@ -7,7 +7,6 @@ const rpcServer = new RPCServer();
 app.whenReady().then(async () => {
   app.setLoginItemSettings({
     openAtLogin: true,
-    openAsHidden: true,
   });
 
   await rpcServer.start();
@@ -19,7 +18,10 @@ app.whenReady().then(async () => {
   const tray = new Tray(iconPath);
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: "Вийти", click: () => app.quit() },
+    { label: "Очистити", click: () => rpcServer.clearActivity() },
+    { label: "Перезавантажити", click: () => rpcServer.reloadActivity() },
+    { type: "separator" },
+    { label: "Зупинити", click: () => app.quit() },
   ]);
 
   tray.setToolTip("AniHub Presence");
