@@ -1,6 +1,7 @@
 import RPC from "rpc-nyrrcly";
 import http from "http";
-import { ActivityData } from "../types/types.js";
+import { PresenceData } from "../types/types.js";
+import { getDubbingStudioLogoUrl } from "../utils/dubbingStudios.js";
 
 export class RPCServer {
   public port: number;
@@ -9,7 +10,8 @@ export class RPCServer {
   public rpc: any;
   public isConnected: boolean;
   public isCleared: boolean;
-  public lastActivityData: ActivityData | null = null;
+  public smallDubbingIcon: boolean;
+  public lastActivityData: PresenceData | null = null;
 
   constructor(port: number = 3000, clientId: string = "1488575005175320858") {
     this.port = port;
@@ -17,6 +19,7 @@ export class RPCServer {
     this.server = null;
     this.rpc = null;
     this.isConnected = false;
+    this.smallDubbingIcon = false;
     this.isCleared = true;
   }
 
@@ -59,26 +62,68 @@ export class RPCServer {
     } else this.clearActivity();
   }
 
-  setActivity(activityData: ActivityData) {
+  setSmallDubbingIcon(smallDubbingIcon: boolean) {
+    if (!this.rpc || !this.isConnected) return;
+    this.smallDubbingIcon = smallDubbingIcon;
+    this.reloadActivity();
+  }
+
+  setActivity(presenceData: PresenceData) {
     if (!this.rpc || !this.isConnected) return;
     this.isCleared = false;
+
+    const { animeData, userData, videoState, currentEpisode, dubbingStudio } = presenceData;    
+    const now = Date.now();
+
+    let startTimestamp: number | undefined;
+    let endTimestamp: number | undefined;
+    if (videoState) {
+      startTimestamp = Math.floor(
+        now - videoState.currentTime * 1000,
+      );
+      endTimestamp = Math.floor(
+        startTimestamp + videoState.duration * 1000,
+      );
+    }
+
+    const episodesText = `Епізоди: ${currentEpisode}/${animeData.episodes_count ?? "∞"}`;
+    const studioText = ` • ${dubbingStudio}`;
+    const state = this.smallDubbingIcon ? episodesText : `${episodesText}${studioText}`;
+
+    const smallImageKey = this.smallDubbingIcon
+      ? getDubbingStudioLogoUrl(animeData.dubbing_studios, dubbingStudio)
+      : userData?.avatar;
+    const smallImageText = this.smallDubbingIcon
+      ? `Дубляж: ${dubbingStudio}`
+      : userData?.username;
+
+    const fallbackLogo = "logo";
+    const fallbackText = "N/A";
+    const animeTitle = animeData.title_ukrainian || "Дивиться аніме";
+
     this.rpc
       .setActivity({
-        details: activityData.details || "Дивиться аніме",
-        state: activityData.state || "Відкрито AnihubStatus",
-        type: activityData.type || 3,
-        largeImageKey: activityData.largeImageKey || "logo",
-        largeImageText: activityData.largeImageText || "Logo",
-        largeImageUrl: activityData.largeImageUrl || "",
-        smallImageKey: activityData.smallImageKey || "logo",
-        smallImageText: activityData.smallImageText || "Logo",
-        smallImageUrl: activityData.smallImageUrl || "",
-        partyId: activityData.partyId || "",
-        partySize: activityData.partySize || 0,
-        partyMax: activityData.partyMax || 0,
-        startTimestamp: activityData.startTimestamp || 0,
-        endTimestamp: activityData.endTimestamp || 0,
-        buttons: activityData.buttons || [],
+        details: animeTitle,
+        state: state,
+        type: 3, // Watching
+        largeImageKey: animeData.poster_url || fallbackLogo,
+        largeImageText: animeData.title_ukrainian || fallbackText,
+        largeImageUrl: "",
+        smallImageKey: smallImageKey || fallbackLogo,
+        smallImageText: smallImageText || fallbackText,
+        smallImageUrl: "",
+        startTimestamp: startTimestamp || 0,
+        endTimestamp: endTimestamp || 0,
+        buttons: [
+          {
+            label: "My Profile",
+            url: `https://anihub.in.ua/profile/${userData.username}`,
+          },
+          {
+            label: "Anime Link",
+            url: `https://anihub.in.ua/anime/${animeData.slug}-${animeData.id}`,
+          },
+        ],
       })
       .catch(console.error);
   }

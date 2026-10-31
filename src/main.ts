@@ -18,6 +18,13 @@ app.whenReady().then(async () => {
   const tray = new Tray(iconPath);
 
   const contextMenu = Menu.buildFromTemplate([
+    {
+      label: "Перемістити дубляж в малу іконку",
+      type: "checkbox",
+      click: () => rpcServer.setSmallDubbingIcon(!rpcServer.smallDubbingIcon),
+      checked: rpcServer.smallDubbingIcon,
+    },
+    { type: "separator" },
     { label: "Очистити", click: () => rpcServer.clearActivity() },
     { label: "Перезавантажити", click: () => rpcServer.reloadActivity() },
     { type: "separator" },
