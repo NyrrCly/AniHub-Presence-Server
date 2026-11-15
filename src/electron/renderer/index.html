@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Discord Activity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Arima:wght@100..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-inline' https://dev.anihub.in.ua;"
+    />
+    <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="stylesheet" href="./styles/switch.css" />
+    <link rel="stylesheet" href="./styles/discordActivity.css" />
+  </head>
+  <body>
+    <div class="settings">
+      <b>Налаштування</b>
+      <div class="settings-catalog">
+        <details class="preference-menu">
+          <summary class="preference-title">
+            <i class="fa-solid fa-caret-right summary-icon"></i>
+            <span class="summary-text">Кастомізація</span>
+          </summary>
+          <div class="preference-catalog">
+            <div class="preference">
+              <div class="preference-details">
+                <span class="preference-header">Іконка аккаунту</span>
+                <span class="preference-description"
+                  >У маленькій іконці буде показано вашу аватарку</span
+                >
+              </div>
+              <label class="preference-switch">
+                <input
+                  id="account-icon"
+                  type="checkbox"
+                  onclick="accountIcon()"
+                />
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="preference">
+              <div class="preference-details">
+                <span class="preference-header">Іконка студії дубляжу</span>
+                <span class="preference-description"
+                  >У маленький іконці буде показано лого студії дубляжу</span
+                >
+              </div>
+              <label class="preference-switch">
+                <input
+                  id="dubbing-icon"
+                  type="checkbox"
+                  onclick="dubbingIcon()"
+                />
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="preference">
+              <div class="preference-details">
+                <span class="preference-header">Анонімний перегляд</span>
+                <span class="preference-description"
+                  >Активність більше не буде з’являтися у вашому профілі при
+                  перегляді аніме</span
+                >
+              </div>
+              <label class="preference-switch">
+                <input id="anonymity" type="checkbox" onclick="anonymity()" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="user-container" hidden>
+        <div class="user-info">
+          <img src="" alt="User Avatar" class="user-avatar" />
+          <span class="user-nickname"></span>
+        </div>
+        <button class="anihub-logout">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          Вийти
+        </button>
+      </div>
+      <anihub-login
+        client-id="anihub_968d66a2ed57f5629d25d6bb"
+        redirect-uri="http://127.0.0.1:3000"
+        scope="openid profile offline_access"
+        flow="redirect"
+        class="anihub-login"
+      ></anihub-login>
+    </div>
+
+    <div class="activity">
+      <span class="activity-name">Watching AniHub</span>
+      <div class="activity-content">
+        <div class="activity-img">
+          <img
+            src="https://cdn.anihub.in.ua/file/media-bucket-anihub/media/anime/posters/5718/u-chas-koly-plachut-tsykady-sezon-1-medium_640-e94df9585d654ad18c18dbe3a0f91592.webp"
+            class="large-image"
+          />
+          <img src="" class="small-image" hidden />
+        </div>
+        <div class="activity-details">
+          <div class="activity-information">
+            <b class="anime-name">У час, коли плачуть цикади: Сезон 1</b>
+            <span class="episode-count">Епізоди: 22/26</span>
+            <div class="current-time">
+              <svg
+                aria-hidden="true"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="20"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="#41A063"
+                  d="M4 3a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3H4ZM6 20a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2H6Z"
+                  class=""
+                ></path>
+              </svg>
+              <span class="time">0:00</span>
+            </div>
+          </div>
+          <div class="activity-buttons">
+            <button class="activity-button">Anime Link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="module" src="./renderer.js"></script>
+  <script src="https://dev.anihub.in.ua/sdk/v2/anihub.js" defer></script>
+</html>
