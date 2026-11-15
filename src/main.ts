@@ -27,7 +27,7 @@ function createWindow(iconPath: string) {
       preload: path.join(import.meta.dirname, "electron", "preload.cjs"),
       nodeIntegration: false,
       contextIsolation: true,
-      devTools: true,
+      devTools: false,
     },
   });
 
