@@ -1,0 +1,129 @@
+body {
+  font-family: "Mona Sans", sans-serif;
+  color: #d0d1d4;
+}
+
+.activity {
+  width: 50%;
+  height: fit-content;
+  background-color: #17181b;
+  gap: 15px;
+  border-radius: 20px;
+  padding: 24px;
+  flex-direction: column;
+  display: flex;
+  margin: auto;
+  overflow: hidden;
+}
+
+.activity-name {
+  font-family: "Mona Sans", sans-serif;
+  font-size: 21px;
+}
+
+.activity-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.activity-img {
+  position: relative;
+  height: 25%;
+  width: 25%;
+  flex-shrink: 0;
+}
+
+.large-image {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  max-height: 200px;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+.small-image {
+  position: absolute;
+  width: clamp(10px, 25vw, 60px);
+  height: clamp(10px, 25vw, 60px);
+  bottom: -15px;
+  right: 0;
+  border: 5px solid #17181b;
+  aspect-ratio: 1 / 1;
+  border-radius: 100%;
+  object-fit: cover;
+}
+
+.activity-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.activity-information {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 15px 12px 15px;
+}
+
+.anime-name {
+  font-family: "DM Sans", sans-serif;
+  font-size: 24px;
+}
+
+.episode-count {
+  font-family: "DM Sans", sans-serif;
+  font-size: 22px;
+}
+
+.time {
+  font-family: "Spline Sans Mono", sans-serif;
+  color: #41a063;
+  font-size: 24px;
+}
+
+.activity-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 14px 0px 14px 18px;
+}
+
+.activity-button {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  padding: 10px 12px;
+  font-family: "DM Sans", sans-serif;
+  color: #d0d1d4;
+  background-color: #26272b;
+  border-radius: 10px;
+  font-size: 24px;
+  border: 3px solid #38393e;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.activity-button:hover {
+  background-color: #303136;
+}
+
+@media (max-width: 800px) {
+  .activity-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1100px) {
+  .activity {
+    zoom: 0.85;
+  }
+}
+
+@media (max-width: 900px) {
+  .activity {
+    zoom: 0.7;
+  }
+}
