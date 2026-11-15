@@ -1,5 +1,4 @@
 export interface PresenceData {
-  userData: UserData;
   animeData: AnimeData;
   currentEpisode: string;
   dubbingStudio: string;
@@ -40,13 +39,27 @@ export interface DubbingStudio {
   logo_url: string;
 }
 
-export interface UserData {
-  username: string;
-  avatar: string | null;
-}
-
 export interface VideoState {
   isPaused: boolean;
   currentTime: number;
   duration: number;
+  currentDate: number;
+}
+
+export interface ActivityTimestamp {
+  startTimestamp: number;
+  endTimestamp: number;
+}
+
+export interface UserConfig {
+  port?: number;
+  anonymity?: boolean;
+  accountIcon?: boolean;
+  dubbingIcon?: boolean;
+  settingsWidth?: number;
+  idToken?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  username?: string;
+  avatar?: string;
 }
