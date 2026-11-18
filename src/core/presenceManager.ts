@@ -91,7 +91,11 @@ export class PresenceManager {
     let timestamp: ActivityTimestamp | undefined;
     if (videoState) timestamp = activityTime(videoState);
 
-    this.win?.webContents.send("change-preview-info", presenceData, dubbingStudioLogo);
+    this.win?.webContents.send(
+      "change-preview-info",
+      presenceData,
+      dubbingStudioLogo,
+    );
 
     this.rpc
       .setActivity({

@@ -213,7 +213,7 @@ window.electron.changePreviewInfo((presenceData, dubbingStudioLogo) => {
   episodeCount.textContent = `Епізоди: ${currentEpisode}/${totalEpisodes}`;
   largeImage.src = presenceData.animeData.poster_url;
   lastDubbingStudioLogo = dubbingStudioLogo;
-  
+
   if (dubbingIconPreference.checked) smallImage.src = lastDubbingStudioLogo;
 });
 
