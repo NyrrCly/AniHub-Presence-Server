@@ -1,4 +1,5 @@
 import { Event } from "electron/main";
+import { PresenceData } from "../types/types";
 
 const { contextBridge, ipcRenderer } = require("electron");
 
@@ -15,6 +16,15 @@ contextBridge.exposeInMainWorld("electron", {
     });
   },
   ackClose: () => ipcRenderer.send("ack-close"),
+  changePreviewInfo: (
+    callback: (presenceData: PresenceData, dubbingStudioLogo: string) => void,
+  ) => {
+    ipcRenderer.on(
+      "change-preview-info",
+      (_event: Event, presenceData: PresenceData, dubbingStudioLogo: string) =>
+        callback(presenceData, dubbingStudioLogo),
+    );
+  },
 });
 
 contextBridge.exposeInMainWorld("preference", {

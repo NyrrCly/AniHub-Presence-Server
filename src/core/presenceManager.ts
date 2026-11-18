@@ -1,19 +1,22 @@
-import RPC from "rpc-nyrrcly";
+import { Client } from "@nyrrcly/discord-rpc";
 import store from "./configManager.js";
 import { ActivityTimestamp, PresenceData } from "../types/types.js";
 import { getDubbingStudioLogoUrl } from "../utils/dubbingStudios.js";
 import { activityTime } from "../utils/timestamp.js";
+import { BrowserWindow } from "electron";
 
 export class PresenceManager {
-  private rpc: RPC.Client;
+  private rpc: Client;
+  private win: BrowserWindow | null = null;
   private isConnected: boolean = false;
   private accountIcon: boolean = false;
   private dubbingIcon: boolean = false;
   private anonymity: boolean = false;
   private lastActivityData: PresenceData | null = null;
 
-  constructor(rpcClient: any) {
+  constructor(rpcClient: Client, win: BrowserWindow | null) {
     this.rpc = rpcClient;
+    this.win = win;
   }
 
   setConnectionStatus(connected: boolean) {
@@ -37,17 +40,17 @@ export class PresenceManager {
     }
   }
 
-  setAccountIcon(accountIcon: boolean) {
+  setAccountIcon(accountIcon: boolean = false) {
     this.accountIcon = accountIcon;
     this.reloadActivity();
   }
 
-  setDubbingIcon(dubbingIcon: boolean) {
+  setDubbingIcon(dubbingIcon: boolean = false) {
     this.dubbingIcon = dubbingIcon;
     this.reloadActivity();
   }
 
-  setAnonymity(anonymity: boolean) {
+  setAnonymity(anonymity: boolean = false) {
     this.anonymity = anonymity;
     if (anonymity) this.clearActivity();
     else this.reloadActivity();
@@ -71,20 +74,24 @@ export class PresenceManager {
     let smallImageText: string | undefined = undefined;
     let smallImageUrl: string | undefined = undefined;
 
+    let dubbingStudioLogo: string | undefined = undefined;
+
     if (this.dubbingIcon && dubbingStudio) {
-      smallImage = getDubbingStudioLogoUrl(
+      dubbingStudioLogo = getDubbingStudioLogoUrl(
         animeData.dubbing_studios,
         dubbingStudio,
       );
+      smallImage = dubbingStudioLogo;
       smallImageText = dubbingStudio;
     } else if (this.accountIcon) {
       smallImage = avatar;
       smallImageText = username;
-      smallImageUrl = `https://anihub.in.ua/profile/${username}`;
     }
 
     let timestamp: ActivityTimestamp | undefined;
     if (videoState) timestamp = activityTime(videoState);
+
+    this.win?.webContents.send("change-preview-info", presenceData, dubbingStudioLogo);
 
     this.rpc
       .setActivity({

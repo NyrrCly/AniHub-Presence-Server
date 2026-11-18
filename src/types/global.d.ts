@@ -1,3 +1,5 @@
+import { PresenceData } from "./types.js";
+
 export {};
 
 declare global {
@@ -12,6 +14,12 @@ declare global {
     electron: {
       onBeforeClose: (callback: (width: number) => void) => void;
       ackClose: () => void;
+      changePreviewInfo: (
+        callback: (
+          presenceData: PresenceData,
+          dubbingStudioLogo: string,
+        ) => void,
+      ) => void;
     };
     preference: {
       accountIcon: (enabled: boolean) => void;

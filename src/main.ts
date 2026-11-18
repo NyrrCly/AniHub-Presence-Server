@@ -50,8 +50,8 @@ app.whenReady().then(async () => {
   createWindow(iconPath);
 
   rpcServer = new RPCServer(electronConfig.port, win);
-  rpcServer.setDubbingIcon(electronConfig.dubbingIcon);
-  rpcServer.setAccountIcon(electronConfig.accountIcon);
+  rpcServer.presenceManager.setDubbingIcon(electronConfig.dubbingIcon);
+  rpcServer.presenceManager.setAccountIcon(electronConfig.accountIcon);
 
   if (!electronConfig.anonymity) await rpcServer.start();
 
@@ -112,13 +112,13 @@ ipcMain.on("ack-close", () => {
 });
 
 ipcMain.on("preference:account-icon", (_, enabled: boolean) => {
-  rpcServer.setAccountIcon(enabled);
+  rpcServer.presenceManager.setAccountIcon(enabled);
 });
 ipcMain.on("preference:dubbing-icon", (_, enabled: boolean) => {
-  rpcServer.setDubbingIcon(enabled);
+  rpcServer.presenceManager.setDubbingIcon(enabled);
 });
 ipcMain.on("preference:anonymity", (_, enabled: boolean) => {
-  rpcServer.setAnonymity(enabled);
+  rpcServer.presenceManager.setAnonymity(enabled);
 });
 ipcMain.handle("store:get", (_, key) => store.get(key));
 ipcMain.handle("store:set", (_, key, value) => {

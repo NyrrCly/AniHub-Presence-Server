@@ -10,6 +10,12 @@ const userAvatar = document.querySelector(".user-avatar") as HTMLImageElement;
 const userNickname = document.querySelector(
   ".user-nickname",
 ) as HTMLTextAreaElement;
+
+const animeName = document.querySelector(".anime-name") as HTMLTextAreaElement;
+const episodeCount = document.querySelector(
+  ".episode-count",
+) as HTMLTextAreaElement;
+const largeImage = document.querySelector(".large-image") as HTMLImageElement;
 const smallImage = document.querySelector(".small-image") as HTMLImageElement;
 
 const accountIconPreference = document.querySelector(
@@ -24,6 +30,7 @@ const anonymityPreference = document.querySelector(
 
 let avatar: string;
 let username: string;
+let lastDubbingStudioLogo: string = "https://anihub.in.ua/logo-192.png";
 
 async function initializeSettings() {
   const savedWidth = (await window.store.getStoreValue("settingsWidth")) ?? 450;
@@ -33,9 +40,10 @@ async function initializeSettings() {
   const dubbingIcon =
     (await window.store.getStoreValue("dubbingIcon")) ?? false;
 
-  const access_token = (await window.store.getStoreValue("accessToken")) ?? undefined;
+  const access_token =
+    (await window.store.getStoreValue("accessToken")) ?? undefined;
 
-  if(access_token) {
+  if (access_token) {
     const userData = await getUserData(access_token);
     avatar = userData.picture;
     username = userData.nickname;
@@ -49,7 +57,7 @@ async function initializeSettings() {
 
   if (accountIcon || dubbingIcon) {
     smallImage.hidden = false;
-    smallImage.src = accountIcon ? avatar : "https://anihub.in.ua/logo-192.png";
+    smallImage.src = accountIcon ? avatar : lastDubbingStudioLogo;
   } else if (!accountIcon || !dubbingIcon) smallImage.hidden = true;
 
   document.documentElement.style.setProperty(
@@ -135,21 +143,23 @@ async function refreshTokens(refreshToken: string) {
  * @param accessToken - access token to user account information
  */
 async function getUserData(accessToken: string) {
-  let userData = await (window as any).AniHubLogin.getUser(accessToken).catch(() => undefined);
+  let userData = await (window as any).AniHubLogin.getUser(accessToken).catch(
+    () => undefined,
+  );
 
-  if(!userData) {
-    const refreshToken = await window.store.getStoreValue("refreshToken")
+  if (!userData) {
+    const refreshToken = await window.store.getStoreValue("refreshToken");
     const authData = await refreshTokens(refreshToken);
-    userData = await (window as any).AniHubLogin.getUser(
-        authData.accessToken,
-    );
+    userData = await (window as any).AniHubLogin.getUser(authData.accessToken);
 
-    //TODO: Change this to basic "authData" when AniHub fix their api
-    saveAccountData({
-      id_token: authData.idToken,
-      access_token: authData.accessToken,
-      refresh_token: authData.refreshToken,
-    }, userData);
+    saveAccountData(
+      {
+        id_token: authData.idToken,
+        access_token: authData.accessToken,
+        refresh_token: authData.refreshToken,
+      },
+      userData,
+    );
   }
   return userData;
 }
@@ -164,9 +174,9 @@ window.anihubLogin.onAuthSuccess(async (code) => {
       const userData = await getUserData(authData.access_token);
 
       saveAccountData(authData, userData);
-      avatar = userData.picture
-      username = userData.nickname
-      showAccount(true)
+      avatar = userData.picture;
+      username = userData.nickname;
+      showAccount(true);
     } catch (err) {
       console.error("Error when exchanging a code for access token:", err);
     }
@@ -193,6 +203,21 @@ logoutButton.addEventListener("click", () => {
 });
 
 /**
+ * Changes preview activity info
+ */
+window.electron.changePreviewInfo((presenceData, dubbingStudioLogo) => {
+  const currentEpisode = presenceData.currentEpisode ?? "-";
+  const totalEpisodes = presenceData.animeData.episodes_count ?? "∞";
+
+  animeName.textContent = presenceData.animeData.title_ukrainian;
+  episodeCount.textContent = `Епізоди: ${currentEpisode}/${totalEpisodes}`;
+  largeImage.src = presenceData.animeData.poster_url;
+  lastDubbingStudioLogo = dubbingStudioLogo;
+  
+  if (dubbingIconPreference.checked) smallImage.src = lastDubbingStudioLogo;
+});
+
+/**
  * Change discord activity preview for account icon setting
  */
 function enableAccountIcon(enable: boolean) {
@@ -208,7 +233,7 @@ function enableAccountIcon(enable: boolean) {
  */
 function enableDubbingIcon(enable: boolean) {
   smallImage.hidden = !enable;
-  smallImage.src = "https://anihub.in.ua/logo-192.png";
+  smallImage.src = lastDubbingStudioLogo;
   dubbingIconPreference.checked = enable;
   window.store.setStoreValue("dubbingIcon", enable);
   window.preference.dubbingIcon(enable);

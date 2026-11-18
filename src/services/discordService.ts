@@ -1,4 +1,4 @@
-import RPC from "rpc-nyrrcly";
+import { Client } from "@nyrrcly/discord-rpc";
 import { PresenceManager } from "../core/presenceManager.js";
 import { BrowserWindow } from "electron";
 import { startServer } from "../core/server.js";
@@ -8,7 +8,7 @@ export class RPCServer {
   public clientId: string;
   public server: any;
   public win: BrowserWindow | null;
-  public rpc: RPC.Client;
+  public rpc: Client;
   public presenceManager: PresenceManager;
 
   constructor(port: number = 3000, win: BrowserWindow | null = null) {
@@ -16,8 +16,8 @@ export class RPCServer {
     this.clientId = "1488575005175320858";
     this.server = null;
     this.win = win;
-    this.rpc = new RPC.Client({ transport: "ipc" });
-    this.presenceManager = new PresenceManager(this.rpc);
+    this.rpc = new Client({ transport: "ipc" });
+    this.presenceManager = new PresenceManager(this.rpc, this.win);
   }
 
   async connectRPC() {
@@ -42,18 +42,6 @@ export class RPCServer {
         this.connectRPC();
       }, 5000);
     }
-  }
-
-  setAccountIcon(accountIcon: boolean = false) {
-    this.presenceManager.setAccountIcon(accountIcon);
-  }
-
-  setDubbingIcon(dubbingIcon: boolean = false) {
-    this.presenceManager.setDubbingIcon(dubbingIcon);
-  }
-
-  setAnonymity(anonymity: boolean = false) {
-    this.presenceManager.setAnonymity(anonymity);
   }
 
   async start() {
