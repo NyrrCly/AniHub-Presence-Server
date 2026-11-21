@@ -4,11 +4,13 @@ import { BrowserWindow } from "electron";
 import { startServer } from "../core/server.js";
 
 export class RPCServer {
-  public port: number;
-  public clientId: string;
-  public server: any;
-  public win: BrowserWindow | null;
-  public rpc: Client;
+  private port: number;
+  private clientId: string;
+  private server: any;
+  private win: BrowserWindow | null;
+  private rpc: Client | null = null;
+  private isConnecting = false;
+  private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
   public presenceManager: PresenceManager;
 
   constructor(port: number = 3000, win: BrowserWindow | null = null) {
@@ -16,32 +18,7 @@ export class RPCServer {
     this.clientId = "1488575005175320858";
     this.server = null;
     this.win = win;
-    this.rpc = new Client({ transport: "ipc" });
-    this.presenceManager = new PresenceManager(this.rpc, this.win);
-  }
-
-  async connectRPC() {
-    this.rpc.on("ready", () => {
-      console.log("[Discord RPC] Successfully connected to discord!");
-      this.presenceManager.setConnectionStatus(true);
-    });
-
-    this.rpc.on("disconnected", () => {
-      this.presenceManager.setConnectionStatus(false);
-      this.rpc.destroy();
-      setTimeout(() => {
-        this.connectRPC();
-      }, 5000);
-    });
-
-    try {
-      await this.rpc.login({ clientId: this.clientId });
-    } catch (error: any) {
-      console.error("[Discord RPC] Connection error:", error.message);
-      setTimeout(() => {
-        this.connectRPC();
-      }, 5000);
-    }
+    this.presenceManager = new PresenceManager(null, this.win);
   }
 
   async start() {
@@ -58,5 +35,52 @@ export class RPCServer {
     if (this.server) this.server.close();
     if (this.rpc) this.rpc.destroy();
     console.log("[Discord RPC] Сервер зупинено.");
+  }
+
+  async connectRPC() {
+    if (this.isConnecting) return;
+    this.isConnecting = true;
+
+    try {
+      this.createClient();
+      await this.rpc!.login({ clientId: this.clientId });
+    } catch (error: any) {
+      console.error("[Discord RPC] Connection error:", error.message);
+      this.isConnecting = false;
+      this.presenceManager.setConnectionStatus(false);
+      this.reconnect();
+    }
+  }
+
+  private createClient() {
+    if (this.rpc) {
+      this.rpc.removeAllListeners();
+      this.rpc.destroy().catch(() => {});
+    }
+
+    this.rpc = new Client({ transport: "ipc" });
+
+    this.rpc.on("ready", () => {
+      this.isConnecting = false;
+      console.log("[Discord RPC] Successfully connected to discord!");
+      this.presenceManager.setClient(this.rpc!);
+      this.presenceManager.setConnectionStatus(true);
+    });
+
+    this.rpc.on("disconnected", () => {
+      this.isConnecting = false;
+      console.log("[Discord RPC] Disconnected!");
+      this.presenceManager.setConnectionStatus(false);
+      this.reconnect();
+    });
+  }
+
+  private reconnect() {
+    if (this.reconnectTimer) return;
+
+    this.reconnectTimer = setTimeout(() => {
+      this.reconnectTimer = null;
+      this.connectRPC();
+    }, 1000);
   }
 }
