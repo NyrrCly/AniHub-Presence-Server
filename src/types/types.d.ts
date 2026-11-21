@@ -56,6 +56,7 @@ export interface UserConfig {
   anonymity?: boolean;
   accountIcon?: boolean;
   dubbingIcon?: boolean;
+  autostart?: boolean;
   settingsWidth?: number;
   idToken?: string;
   accessToken?: string;

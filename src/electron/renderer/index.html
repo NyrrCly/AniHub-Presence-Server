@@ -23,7 +23,6 @@
   </head>
   <body>
     <div class="settings">
-      <b>Налаштування</b>
       <div class="settings-catalog">
         <details class="preference-menu">
           <summary class="preference-title">
@@ -75,6 +74,27 @@
               </div>
               <label class="preference-switch">
                 <input id="anonymity" type="checkbox" onclick="anonymity()" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </details>
+
+        <details class="preference-menu">
+          <summary class="preference-title">
+            <i class="fa-solid fa-caret-right summary-icon"></i>
+            <span class="summary-text">Налаштування</span>
+          </summary>
+          <div class="preference-catalog">
+            <div class="preference">
+              <div class="preference-details">
+                <span class="preference-header">Автозапуск</span>
+                <span class="preference-description"
+                  >Автоматично запускати додаток під час завантаження системи</span
+                >
+              </div>
+              <label class="preference-switch">
+                <input id="autostart" type="checkbox" onclick="autostart()" />
                 <span class="slider round"></span>
               </label>
             </div>

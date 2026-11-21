@@ -7,6 +7,7 @@ declare global {
     accountIcon: () => void;
     dubbingIcon: () => void;
     anonymity: () => void;
+    autostart: () => void;
     store: {
       getStoreValue: (key: string) => any;
       setStoreValue: (key: string, value: any) => void;
@@ -25,6 +26,7 @@ declare global {
       accountIcon: (enabled: boolean) => void;
       dubbingIcon: (enabled: boolean) => void;
       anonymity: (enabled: boolean) => void;
+      autostart: (enabled: boolean) => void;
     };
     anihubLogin: {
       onAuthSuccess: (callback: (code: string) => void) => void;
