@@ -23,21 +23,21 @@
   </head>
   <body>
     <div class="settings">
-      <div class="settings-catalog">
-        <details class="preference-menu">
-          <summary class="preference-title">
-            <i class="fa-solid fa-caret-right summary-icon"></i>
-            <span class="summary-text">Кастомізація</span>
+      <div class="settings-list">
+        <details class="setting-group">
+          <summary class="setting-group-header">
+            <i class="fa-solid fa-caret-right setting-group-icon"></i>
+            <span class="setting-group-title">Кастомізація</span>
           </summary>
-          <div class="preference-catalog">
-            <div class="preference">
-              <div class="preference-details">
-                <span class="preference-header">Іконка аккаунту</span>
-                <span class="preference-description"
+          <div class="setting-group-items">
+            <div class="setting-item">
+              <div class="setting-item-info">
+                <span class="setting-item-label">Іконка аккаунту</span>
+                <span class="setting-item-description"
                   >У маленькій іконці буде показано вашу аватарку</span
                 >
               </div>
-              <label class="preference-switch">
+              <label class="setting-switch">
                 <input
                   id="account-icon"
                   type="checkbox"
@@ -47,14 +47,14 @@
               </label>
             </div>
 
-            <div class="preference">
-              <div class="preference-details">
-                <span class="preference-header">Іконка студії дубляжу</span>
-                <span class="preference-description"
+            <div class="setting-item">
+              <div class="setting-item-info">
+                <span class="setting-item-label">Іконка студії дубляжу</span>
+                <span class="setting-item-description"
                   >У маленький іконці буде показано лого студії дубляжу</span
                 >
               </div>
-              <label class="preference-switch">
+              <label class="setting-switch">
                 <input
                   id="dubbing-icon"
                   type="checkbox"
@@ -64,15 +64,15 @@
               </label>
             </div>
 
-            <div class="preference">
-              <div class="preference-details">
-                <span class="preference-header">Анонімний перегляд</span>
-                <span class="preference-description"
+            <div class="setting-item">
+              <div class="setting-item-info">
+                <span class="setting-item-label">Анонімний перегляд</span>
+                <span class="setting-item-description"
                   >Активність більше не буде з’являтися у вашому профілі при
                   перегляді аніме</span
                 >
               </div>
-              <label class="preference-switch">
+              <label class="setting-switch">
                 <input id="anonymity" type="checkbox" onclick="anonymity()" />
                 <span class="slider round"></span>
               </label>
@@ -80,20 +80,20 @@
           </div>
         </details>
 
-        <details class="preference-menu">
-          <summary class="preference-title">
-            <i class="fa-solid fa-caret-right summary-icon"></i>
-            <span class="summary-text">Налаштування</span>
+        <details class="setting-group">
+          <summary class="setting-group-header">
+            <i class="fa-solid fa-caret-right setting-group-icon"></i>
+            <span class="setting-group-title">Налаштування</span>
           </summary>
-          <div class="preference-catalog">
-            <div class="preference">
-              <div class="preference-details">
-                <span class="preference-header">Автозапуск</span>
-                <span class="preference-description"
+          <div class="setting-group-items">
+            <div class="setting-item">
+              <div class="setting-item-info">
+                <span class="setting-item-label">Автозапуск</span>
+                <span class="setting-item-description"
                   >Автоматично запускати додаток під час завантаження системи</span
                 >
               </div>
-              <label class="preference-switch">
+              <label class="setting-switch">
                 <input id="autostart" type="checkbox" onclick="autostart()" />
                 <span class="slider round"></span>
               </label>
