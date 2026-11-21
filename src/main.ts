@@ -40,7 +40,7 @@ function createWindow(iconPath: string) {
 }
 
 app.whenReady().then(async () => {
-  if(!electronConfig.autostart) {
+  if (!electronConfig.autostart) {
     app.setLoginItemSettings({
       openAtLogin: false,
     });

@@ -42,8 +42,7 @@ async function initializeSettings() {
     (await window.store.getStoreValue("accountIcon")) ?? false;
   const dubbingIcon =
     (await window.store.getStoreValue("dubbingIcon")) ?? false;
-  const autostart =
-    (await window.store.getStoreValue("autostart")) ?? false;
+  const autostart = (await window.store.getStoreValue("autostart")) ?? false;
 
   const access_token =
     (await window.store.getStoreValue("accessToken")) ?? undefined;
