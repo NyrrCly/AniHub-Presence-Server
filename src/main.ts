@@ -8,6 +8,7 @@ const electronConfig: UserConfig = {
   anonymity: store.get("anonymity", false),
   accountIcon: store.get("accountIcon", false),
   dubbingIcon: store.get("dubbingIcon", false),
+  autostart: store.get("autostart", false),
   port: store.get("port", 3000),
 };
 let isQuitting = false;
@@ -39,9 +40,11 @@ function createWindow(iconPath: string) {
 }
 
 app.whenReady().then(async () => {
-  app.setLoginItemSettings({
-    openAtLogin: true,
-  });
+  if (!electronConfig.autostart) {
+    app.setLoginItemSettings({
+      openAtLogin: false,
+    });
+  }
 
   const iconPath = app.isPackaged
     ? path.join(process.resourcesPath, "assets", "logo.png")
@@ -114,12 +117,21 @@ ipcMain.on("ack-close", () => {
 ipcMain.on("preference:account-icon", (_, enabled: boolean) => {
   rpcServer.presenceManager.setAccountIcon(enabled);
 });
+
 ipcMain.on("preference:dubbing-icon", (_, enabled: boolean) => {
   rpcServer.presenceManager.setDubbingIcon(enabled);
 });
+
 ipcMain.on("preference:anonymity", (_, enabled: boolean) => {
   rpcServer.presenceManager.setAnonymity(enabled);
 });
+
+ipcMain.on("preference:autostart", (_, enabled: boolean) => {
+  app.setLoginItemSettings({
+    openAtLogin: enabled,
+  });
+});
+
 ipcMain.handle("store:get", (_, key) => store.get(key));
 ipcMain.handle("store:set", (_, key, value) => {
   if (value === undefined || value === null) store.delete(key);

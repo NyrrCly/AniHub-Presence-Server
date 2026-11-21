@@ -7,6 +7,7 @@ const store = new ElectronStore<UserConfig>({
     anonymity: false,
     accountIcon: false,
     dubbingIcon: false,
+    autostart: false,
     settingsWidth: 450,
     idToken: undefined,
     accessToken: undefined,

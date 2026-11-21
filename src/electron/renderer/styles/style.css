@@ -51,11 +51,11 @@ body {
   overflow: auto;
 }
 
-.settings-catalog {
+.settings-list {
   width: 95%;
   height: 100%;
-  gap: 15px;
-  padding: 15px 10px 15px 10px;
+  padding: 10px;
+  gap: 10px;
   background-color: #0f1724;
   border-radius: 35px;
   border: 3px solid rgba(255, 255, 255, 0.2);
@@ -67,17 +67,17 @@ body {
   scroll-behavior: smooth;
 }
 
-.preference-menu {
+.setting-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 10px
 }
 
-.preference-title {
+.setting-group-header {
   min-height: 45px;
   background-color: #172130;
-  border-radius: 35px;
   padding: 0 20px;
+  border-radius: 25px;
   border: 3px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
   display: flex;
@@ -86,31 +86,27 @@ body {
   list-style: none;
 }
 
-.preference::-webkit-details-marker {
-  display: none;
-}
-
-.summary-icon {
+.setting-group-icon {
   color: #a684ff;
   font-size: 40px;
   transition: transform 0.2s ease;
 }
 
-details[open] .preference-title .summary-icon {
+details[open] .setting-group-header .setting-group-icon {
   transform: rotate(90deg);
 }
 
-.summary-text {
+.setting-group-title {
   flex: 1;
   font-weight: bold;
   font-size: x-large;
   text-align: center;
 }
 
-.preference-catalog {
+.setting-group-items {
   background-color: #172130;
   border: 3px solid rgba(255, 255, 255, 0.2);
-  border-radius: 35px;
+  border-radius: 25px;
   gap: 15px;
   padding: 10px;
   display: flex;
@@ -118,10 +114,10 @@ details[open] .preference-title .summary-icon {
   align-items: stretch;
 }
 
-.preference {
+.setting-item {
   background-color: #1a2434;
   border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 25px;
+  border-radius: 15px;
   padding: 10px;
   gap: 10px;
   display: flex;
@@ -131,25 +127,29 @@ details[open] .preference-title .summary-icon {
   transition: all 0.2s ease;
 }
 
-.preference-details {
+.setting-item::-webkit-details-marker {
+  display: none;
+}
+
+.setting-item:has(input:checked) {
+  background-color: #292850;
+  border: 2px solid rgba(81, 56, 150, 0.5);
+}
+
+.setting-item-info {
   display: flex;
   flex-direction: column;
 }
 
-.preference-header {
+.setting-item-label {
   font-size: 20px;
   font-weight: bold;
 }
 
-.preference-description {
+.setting-item-description {
   color: rgba(255, 255, 255, 0.5);
   font-size: 12px;
   font-weight: bold;
-}
-
-.preference:has(input:checked) {
-  background-color: #292850;
-  border: 2px solid rgba(81, 56, 150, 0.5);
 }
 
 .user-container {
