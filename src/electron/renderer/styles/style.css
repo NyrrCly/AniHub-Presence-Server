@@ -54,8 +54,8 @@ body {
 .settings-list {
   width: 95%;
   height: 100%;
-  gap: 15px;
-  padding: 15px 10px 15px 10px;
+  padding: 10px;
+  gap: 10px;
   background-color: #0f1724;
   border-radius: 35px;
   border: 3px solid rgba(255, 255, 255, 0.2);
@@ -70,14 +70,14 @@ body {
 .setting-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 10px
 }
 
 .setting-group-header {
   min-height: 45px;
   background-color: #172130;
-  border-radius: 35px;
   padding: 0 20px;
+  border-radius: 25px;
   border: 3px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
   display: flex;
@@ -106,7 +106,7 @@ details[open] .setting-group-header .setting-group-icon {
 .setting-group-items {
   background-color: #172130;
   border: 3px solid rgba(255, 255, 255, 0.2);
-  border-radius: 35px;
+  border-radius: 25px;
   gap: 15px;
   padding: 10px;
   display: flex;
@@ -117,7 +117,7 @@ details[open] .setting-group-header .setting-group-icon {
 .setting-item {
   background-color: #1a2434;
   border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 25px;
+  border-radius: 15px;
   padding: 10px;
   gap: 10px;
   display: flex;
