@@ -27,6 +27,9 @@ const dubbingIconPreference = document.querySelector(
 const anonymityPreference = document.querySelector(
   "#anonymity",
 ) as HTMLInputElement;
+const autoStartPreference = document.querySelector(
+  "#autostart",
+) as HTMLInputElement;
 
 let avatar: string;
 let username: string;
@@ -39,6 +42,7 @@ async function initializeSettings() {
     (await window.store.getStoreValue("accountIcon")) ?? false;
   const dubbingIcon =
     (await window.store.getStoreValue("dubbingIcon")) ?? false;
+  const autostart = (await window.store.getStoreValue("autostart")) ?? false;
 
   const access_token =
     (await window.store.getStoreValue("accessToken")) ?? undefined;
@@ -52,6 +56,7 @@ async function initializeSettings() {
   accountIconPreference.checked = accountIcon;
   dubbingIconPreference.checked = dubbingIcon;
   anonymityPreference.checked = anonymity;
+  autoStartPreference.checked = autostart;
 
   showAccount(!!access_token);
 
@@ -264,6 +269,15 @@ window.anonymity = function () {
   const preferenceValue = anonymityPreference.checked;
   window.store.setStoreValue("anonymity", preferenceValue);
   window.preference.anonymity(preferenceValue);
+};
+
+/**
+ * Autostart preference event
+ */
+window.autostart = function () {
+  const preferenceValue = autoStartPreference.checked;
+  window.store.setStoreValue("autostart", preferenceValue);
+  window.preference.autostart(preferenceValue);
 };
 
 /**

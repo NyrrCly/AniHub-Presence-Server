@@ -6,7 +6,7 @@ import { activityTime } from "../utils/timestamp.js";
 import { BrowserWindow } from "electron";
 
 export class PresenceManager {
-  private rpc: Client;
+  private rpc: Client | null;
   private win: BrowserWindow | null = null;
   private isConnected: boolean = false;
   private accountIcon: boolean = false;
@@ -14,9 +14,13 @@ export class PresenceManager {
   private anonymity: boolean = false;
   private lastActivityData: PresenceData | null = null;
 
-  constructor(rpcClient: Client, win: BrowserWindow | null) {
+  constructor(rpcClient: Client | null, win: BrowserWindow | null) {
     this.rpc = rpcClient;
     this.win = win;
+  }
+
+  setClient(client: Client) {
+    this.rpc = client;
   }
 
   setConnectionStatus(connected: boolean) {
